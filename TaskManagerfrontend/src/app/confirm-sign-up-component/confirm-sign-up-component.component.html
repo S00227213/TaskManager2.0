@@ -1,0 +1,15 @@
+<p>confirm-sign-up-component works!</p>
+
+<form (ngSubmit)="onSubmit()" [formGroup]="confirmForm">
+  <div>
+    <label for="username">Username:</label>
+    <input type="text" id="username" formControlName="username" required>
+  </div>
+  
+  <div>
+    <label for="code">Confirmation Code:</label>
+    <input type="text" id="code" formControlName="code" required>
+  </div>
+  
+  <button type="submit" [disabled]="!confirmForm.valid">Confirm Sign Up</button>
+</form>

@@ -1,0 +1,53 @@
+<mat-toolbar color="primary" class="animated-element">
+  <span>Task Manager</span>
+  <span class="spacer"></span>
+  <button mat-button routerLink="/home">Home</button>
+  <button mat-button routerLink="/tasklist">Task List</button>
+  <button mat-button color="accent" routerLink="/create-task">Create New Task</button>
+  
+  <!-- Dropdown for authenticated user -->
+  <span *ngIf="isAuthenticated" class="user-info">
+    <button mat-button [matMenuTriggerFor]="userMenu">{{ userEmail }}</button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item>{{ userEmail }}</button>
+      <button mat-menu-item (click)="logout()">Log out</button>
+    </mat-menu>
+  </span>
+
+  <!-- Adjusted: Removed the login button as login functionality should be handled differently with Cognito -->
+</mat-toolbar>
+
+<!-- Priority Filter Dropdown -->
+<div class="filter-container">
+  <mat-form-field>
+    <mat-label>Filter by Priority</mat-label>
+    <mat-select [(ngModel)]="selectedPriority" (selectionChange)="onPriorityChange()">
+      <mat-option *ngFor="let priority of priorities" [value]="priority">{{ priority }}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+<!-- Task Cards Container -->
+<div class="task-container">
+  <mat-card *ngFor="let task of filteredTasks" class="task-card fade-in">
+    <mat-card-header>
+      <mat-card-title>{{ task.title }}</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <p>Description: {{ task.description }}</p>
+      <p>Due Date: {{ task.dueDate | date }}</p>
+      <p>Priority: {{ task.priority }}</p>
+      <p [ngClass]="{
+            'status-pending': task.status === 'Pending',
+            'status-ongoing': task.status === 'Ongoing',
+            'status-completed': task.status === 'Completed'
+          }">Status: {{ task.status }}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <button mat-button class="edit-button" [routerLink]="['/task-edit', task._id]">
+        Edit
+      </button>
+      <button mat-button color="warn" (click)="deleteTask(task._id)">Delete</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

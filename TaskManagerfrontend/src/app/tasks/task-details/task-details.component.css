@@ -1,0 +1,41 @@
+.task-form-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.toolbar-title {
+  flex: 1;
+  font-size: 1.5rem;
+  font-weight: 500;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
+.mat-icon {
+  color: rgba(0, 0, 0, 0.54);
+}
+.mat-toolbar {
+  display: flex;
+  align-items: center;
+}
+
+.toolbar-back-action {
+  margin-right: 16px;
+}
+
+.toolbar-title {
+  flex-grow: 1;
+  text-align: center;
+}

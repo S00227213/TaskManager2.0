@@ -1,0 +1,95 @@
+.task-manager-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 1.5rem;
+}
+
+.spacer {
+  flex: 1;
+}
+
+.task-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 16px;
+  padding: 16px;
+}
+
+.task-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  border-radius: 5px;
+}
+
+.task-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+mat-card-header {
+  align-items: center;
+}
+
+mat-card-title {
+  font-size: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+
+mat-card-content p {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
+}
+
+mat-card-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+mat-card-actions button {
+  margin-left: 8px;
+}
+
+
+button[color="accent"] {
+  background-color: #ff4081;
+  color: white;
+}
+
+button[color="accent"]:hover {
+  background-color: #f50057;
+}
+
+.status-pending {
+  color: #ffa500; /* Orange for pending tasks */
+}
+
+.status-ongoing {
+  color: #0000ff; /* Blue for ongoing tasks */
+}
+
+.status-completed {
+  color: #008000; /* Green for completed tasks */
+}
+
+
+/* Fade-in animation */
+.fade-in {
+  animation: fadeInAnimation ease 1s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeInAnimation {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,65 @@
+<div class="task-form-container">
+  <mat-toolbar color="primary">
+    <!-- Back button to return to the task list -->
+    <button mat-icon-button [routerLink]="['/tasklist']" aria-label="Back to task list">
+      <mat-icon>arrow_back</mat-icon>
+    </button>
+    <span class="toolbar-title">Create New Task</span>
+  </mat-toolbar>
+
+  <form [formGroup]="taskForm" (ngSubmit)="createTask()" class="task-form">
+    <!-- Title Field -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Title</mat-label>
+      <input matInput formControlName="title" required autocomplete="off">
+      <mat-icon matSuffix>title</mat-icon>
+      <mat-error *ngIf="taskForm.get('title')?.touched && taskForm.get('title')?.hasError('required')">
+        Title is required.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Description Field -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Description</mat-label>
+      <textarea matInput formControlName="description" rows="4" autocomplete="off" maxlength="1000"></textarea>
+      <mat-icon matSuffix>notes</mat-icon>
+      <mat-error *ngIf="taskForm.get('description')?.touched && taskForm.get('description')?.value?.length > 1000">
+        Description must be less than 1000 characters.
+      </mat-error>
+    </mat-form-field>
+
+    <!-- Due Date Field -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Due Date</mat-label>
+      <input matInput formControlName="dueDate" type="date" [min]="today | date:'yyyy-MM-dd'" autocomplete="off">
+      <mat-icon matSuffix>event</mat-icon>
+    </mat-form-field>
+
+    <!-- Priority Field -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Priority</mat-label>
+      <mat-select formControlName="priority">
+        <mat-option value="Low">Low</mat-option>
+        <mat-option value="Medium">Medium</mat-option>
+        <mat-option value="High">High</mat-option>
+      </mat-select>
+      <mat-icon matSuffix>flag</mat-icon>
+    </mat-form-field>
+
+    <!-- Status Field -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label>Status</mat-label>
+      <mat-select formControlName="status">
+        <mat-option value="Pending">Pending</mat-option>
+        <mat-option value="Ongoing">Ongoing</mat-option>
+        <mat-option value="Completed">Completed</mat-option>
+      </mat-select>
+      <mat-icon matSuffix>info_outline</mat-icon>
+    </mat-form-field>
+
+    <!-- Submit Button -->
+    <div class="form-actions">
+      <button mat-raised-button color="primary" type="submit" [disabled]="!taskForm.valid">Create Task</button>
+    </div>
+  </form>
+</div>
