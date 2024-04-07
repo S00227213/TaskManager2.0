@@ -15,7 +15,7 @@ const routes: Routes = [
   { path: 'task-edit/:id', component: TaskEditComponent, canActivate: [CognitoAuthGuard] },
   { path: 'create-task', component: TaskDetailsComponent, canActivate: [CognitoAuthGuard] },
   { path: 'sign-in', component: SignInComponentComponent },
-  { path: 'sign-up', component: SignUpComponentComponent }, 
+  { path: 'sign-up', component: SignUpComponentComponent },
 ];
 
 @NgModule({

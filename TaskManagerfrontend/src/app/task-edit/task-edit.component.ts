@@ -30,7 +30,7 @@ export class TaskEditComponent implements OnInit {
     if (this.taskId) {
       this.loadTaskData(this.taskId);
     }
-    this.checkAuthentication();
+    await this.checkAuthentication();
   }
 
   private async checkAuthentication() {
@@ -51,12 +51,15 @@ export class TaskEditComponent implements OnInit {
   private loadTaskData(taskId: string) {
     this.taskService.getTaskById(taskId).subscribe(
       (task) => {
-        if (task.dueDate) {
-          task.dueDate = new Date(task.dueDate).toISOString().split('T')[0];
+        if (task && task.dueDate) {
+          task.dueDate = new Date(task.dueDate).toISOString().split('T')[0]; 
         }
         this.taskForm.patchValue(task);
       },
-      (error) => console.error('Error fetching task data:', error)
+      (error) => {
+        console.error('Error fetching task data:', error);
+        this.snackBar.open('Failed to load task data', 'OK', { duration: 3000 });
+      }
     );
   }
 
@@ -67,7 +70,10 @@ export class TaskEditComponent implements OnInit {
           this.snackBar.open('Task updated successfully', 'OK', { duration: 3000 });
           this.router.navigate(['/tasklist']);
         },
-        (error) => console.error('Error updating task:', error)
+        (error) => {
+          console.error('Error updating task:', error);
+          this.snackBar.open('Failed to update task', 'OK', { duration: 3000 });
+        }
       );
     }
   }

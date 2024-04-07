@@ -1,0 +1,20 @@
+<!-- navbar.component.html -->
+<mat-toolbar color="primary" class="animated-element modern-nav">
+  <span class="logo">Task Manager</span>
+  <span class="spacer"></span>
+  <button mat-button routerLink="/home">Home</button>
+  <button mat-button routerLink="/create-task" *ngIf="isAuthenticated">Create Task</button>
+<button mat-button routerLink="/tasklist" *ngIf="isAuthenticated">Task List</button>
+  <!-- Dropdown menu for authenticated user -->
+  <span *ngIf="isAuthenticated" class="user-info">
+    {{ username }}
+    <button mat-button [matMenuTriggerFor]="userMenu">Menu</button>
+    <mat-menu #userMenu="matMenu">
+      <button mat-menu-item (click)="logout()">Log out</button>
+    </mat-menu>
+  </span>
+
+  <!-- Login and Sign-up buttons for unauthenticated users -->
+  <button mat-button routerLink="/sign-in" *ngIf="!isAuthenticated">Log in</button>
+  <button mat-button routerLink="/sign-up" *ngIf="!isAuthenticated">Sign up</button>
+</mat-toolbar>

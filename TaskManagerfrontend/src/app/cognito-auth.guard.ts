@@ -13,7 +13,7 @@ export class CognitoAuthGuard implements CanActivate {
     if (currentUser) {
       return true;
     } else {
-      this.router.navigate(['/sign-in']); // Redirect to the login page if not authenticated
+      this.router.navigate(['/sign-in']); 
       return false;
     }
   }

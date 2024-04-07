@@ -1,15 +1,11 @@
-Simport { Injectable } from '@angular/core';
-import {
-  CognitoUserPool,
-  CognitoUserAttribute,
-  AuthenticationDetails,
-  CognitoUser,
-  CognitoUserSession,
-} from 'amazon-cognito-identity-js';
+import { Injectable } from '@angular/core';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { CognitoUserPool, CognitoUserAttribute, AuthenticationDetails, CognitoUser, CognitoUserSession, ISignUpResult } from 'amazon-cognito-identity-js';
+import { AuthService } from './auth.service';
 
 const poolData = {
-  UserPoolId: 'eu-west-1_45yUFXA2P', //  User Pool ID
-  ClientId: '77gmidt9ljuuqvn7rs0srolkl7', // Client ID
+  UserPoolId: 'eu-west-1_45yUFXA2P',
+  ClientId: '77gmidt9ljuuqvn7rs0srolkl7',
 };
 
 const userPool = new CognitoUserPool(poolData);
@@ -18,16 +14,16 @@ const userPool = new CognitoUserPool(poolData);
   providedIn: 'root',
 })
 export class CognitoService {
-  constructor() {}
+  constructor(private snackBar: MatSnackBar, private authService: AuthService) {} 
 
   getCurrentUser(): Promise<CognitoUser | null> {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const currentUser = userPool.getCurrentUser();
-      if (currentUser != null) {
-        currentUser.getSession((err: any, session: CognitoUserSession) => {
+      if (currentUser) {
+        currentUser.getSession((err: Error | null, session: CognitoUserSession | null) => {
           if (err) {
-            reject(err);
-          } else if (session.isValid()) {
+            resolve(null);
+          } else if (session && session.isValid()) {
             resolve(currentUser);
           } else {
             resolve(null);
@@ -38,41 +34,48 @@ export class CognitoService {
       }
     });
   }
-  signUp(email: string, password: string, attributes: CognitoUserAttribute[] = []): Promise<CognitoUser | any> {
-    return new Promise((resolve, reject) => {
-        userPool.signUp(email, password, attributes, [], (err, result) => { 
-            if (err) {
-                reject(err);
-                return;
-            }
-            if (result) { 
-                resolve(result.user);
-            } else {
-                reject(new Error('Sign up failed without an error message.'));
-            }
-        });
-    });
-}
 
-  confirmSignUp(username: string, code: string): Promise<string> {
+  signUp(email: string, password: string, attributes: CognitoUserAttribute[]): Promise<ISignUpResult | Error> {
+    return new Promise((resolve, reject) => {
+      userPool.signUp(email, password, attributes, [], (err, result) => {
+        if (err) {
+          reject(err);
+        } else {
+          resolve(result as ISignUpResult);
+        }
+      });
+    });
+  }
+
+  confirmSignUp(username: string, code: string): Promise<string | Error> {
     const cognitoUser = new CognitoUser({ Username: username, Pool: userPool });
+
     return new Promise((resolve, reject) => {
       cognitoUser.confirmRegistration(code, true, (err, result) => {
         if (err) {
           reject(err);
         } else {
+          this.snackBar.open('Account verified successfully!', 'Close', {
+            duration: 3000,
+          });
           resolve(result);
         }
       });
     });
   }
 
-  signIn(username: string, password: string): Promise<CognitoUserSession> {
-    const authenticationDetails = new AuthenticationDetails({ Username: username, Password: password });
+  signIn(username: string, password: string): Promise<CognitoUserSession | Error> {
+    const authenticationDetails = new AuthenticationDetails({
+      Username: username,
+      Password: password,
+    });
     const cognitoUser = new CognitoUser({ Username: username, Pool: userPool });
+
     return new Promise((resolve, reject) => {
       cognitoUser.authenticateUser(authenticationDetails, {
         onSuccess: (session) => {
+          // Update global auth status upon successful sign-in
+          this.authService.updateAuthenticationStatus(true, username);
           resolve(session);
         },
         onFailure: (err) => {
@@ -86,22 +89,24 @@ export class CognitoService {
     const currentUser = userPool.getCurrentUser();
     if (currentUser) {
       currentUser.signOut();
+      // Update global auth status upon sign-out
+      this.authService.updateAuthenticationStatus(false, '');
     }
   }
 
-  getSession(): Promise<CognitoUserSession | null> {
+  getSession(): Promise<CognitoUserSession | Error> {
     return this.getCurrentUser().then((user) => {
       return new Promise((resolve, reject) => {
         if (user) {
-          user.getSession((err: any, session: CognitoUserSession) => {
+          user.getSession((err: Error | null, session: CognitoUserSession | null) => {
             if (err) {
               reject(err);
             } else {
-              resolve(session);
+              resolve(session as CognitoUserSession);
             }
           });
         } else {
-          reject('No current user');
+          reject(new Error('No current user'));
         }
       });
     });

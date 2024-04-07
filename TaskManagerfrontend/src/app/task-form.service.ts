@@ -8,7 +8,6 @@ export class TaskFormService {
 
   constructor(private fb: FormBuilder) {}
 
-  // Initialize a task form, with optional task data pre-fill
   initTaskForm(task?: any): FormGroup {
     return this.fb.group({
       title: [task ? task.title : '', Validators.required],
@@ -16,6 +15,7 @@ export class TaskFormService {
       dueDate: [task ? new Date(task.dueDate).toISOString().split('T')[0] : '', Validators.required],
       priority: [task ? task.priority : '', Validators.required],
       status: [task ? task.status : 'Pending', Validators.required],
+      category: [task ? task.category : '', Validators.required], 
     });
   }
   

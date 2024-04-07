@@ -1,6 +1,5 @@
 <div class="task-form-container">
   <mat-toolbar color="primary">
-    <!-- Back button to return to the task list -->
     <button mat-icon-button [routerLink]="['/tasklist']" aria-label="Back to task list">
       <mat-icon>arrow_back</mat-icon>
     </button>
@@ -8,53 +7,48 @@
   </mat-toolbar>
 
   <form [formGroup]="taskForm" (ngSubmit)="createTask()" class="task-form">
-    <!-- Title Field -->
+    <!-- Category Input -->
     <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Title</mat-label>
-      <input matInput formControlName="title" required autocomplete="off">
-      <mat-icon matSuffix>title</mat-icon>
-      <mat-error *ngIf="taskForm.get('title')?.touched && taskForm.get('title')?.hasError('required')">
-        Title is required.
-      </mat-error>
-    </mat-form-field>
-
-    <!-- Description Field -->
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Description</mat-label>
-      <textarea matInput formControlName="description" rows="4" autocomplete="off" maxlength="1000"></textarea>
-      <mat-icon matSuffix>notes</mat-icon>
-      <mat-error *ngIf="taskForm.get('description')?.touched && taskForm.get('description')?.value?.length > 1000">
-        Description must be less than 1000 characters.
-      </mat-error>
-    </mat-form-field>
-
-    <!-- Due Date Field -->
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Due Date</mat-label>
-      <input matInput formControlName="dueDate" type="date" [min]="today | date:'yyyy-MM-dd'" autocomplete="off">
-      <mat-icon matSuffix>event</mat-icon>
-    </mat-form-field>
-
-    <!-- Priority Field -->
-    <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Priority</mat-label>
-      <mat-select formControlName="priority">
-        <mat-option value="Low">Low</mat-option>
-        <mat-option value="Medium">Medium</mat-option>
-        <mat-option value="High">High</mat-option>
+      <mat-label for="category">Category</mat-label>
+      <mat-select id="category" formControlName="category_id">
+        <mat-option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</mat-option>
       </mat-select>
-      <mat-icon matSuffix>flag</mat-icon>
+    </mat-form-field>
+    
+    <!-- Title Input -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label for="title">Title</mat-label>
+      <input id="title" matInput formControlName="title" required autocomplete="off">
     </mat-form-field>
 
-    <!-- Status Field -->
+    <!-- Description Input -->
     <mat-form-field appearance="fill" class="full-width">
-      <mat-label>Status</mat-label>
-      <mat-select formControlName="status">
-        <mat-option value="Pending">Pending</mat-option>
-        <mat-option value="Ongoing">Ongoing</mat-option>
-        <mat-option value="Completed">Completed</mat-option>
+      <mat-label for="description">Description</mat-label>
+      <textarea id="description" matInput formControlName="description" rows="4" autocomplete="off" maxlength="1000"></textarea>
+    </mat-form-field>
+
+    <!-- Due Date Input -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label for="dueDate">Due Date</mat-label>
+      <input id="dueDate" matInput [matDatepicker]="picker" formControlName="due_date" required autocomplete="off">
+      <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+    </mat-form-field>
+
+    <!-- Priority Input -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label for="priority">Priority</mat-label>
+      <mat-select id="priority" formControlName="priority">
+        <mat-option *ngFor="let priority of priorities" [value]="priority.value">{{ priority.viewValue }}</mat-option>
       </mat-select>
-      <mat-icon matSuffix>info_outline</mat-icon>
+    </mat-form-field>
+
+    <!-- Status Input -->
+    <mat-form-field appearance="fill" class="full-width">
+      <mat-label for="status">Status</mat-label>
+      <mat-select id="status" formControlName="status">
+        <mat-option *ngFor="let status of statuses" [value]="status.value">{{ status.viewValue }}</mat-option>
+      </mat-select>
     </mat-form-field>
 
     <!-- Submit Button -->

@@ -1,0 +1,13 @@
+<h2 mat-dialog-title>Enter Confirmation Code</h2>
+<mat-dialog-content>
+  <p>A confirmation code has been sent to your email. Please enter it below to confirm your sign-up.</p>
+  <mat-form-field>
+    <mat-label>Confirmation Code</mat-label>
+    <input matInput [(ngModel)]="data.code">
+  </mat-form-field>
+  <p *ngIf="errorMessage" class="alert alert-danger">{{ errorMessage }}</p>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button (click)="confirmCode()">Confirm</button>
+  <button mat-button (click)="dialogRef.close()">Cancel</button>
+</mat-dialog-actions>

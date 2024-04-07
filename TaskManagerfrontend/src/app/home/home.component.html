@@ -1,25 +1,6 @@
-<mat-toolbar color="primary" class="animated-element">
-  <span>Task Manager</span>
-  <span class="spacer"></span>
-  <button mat-button routerLink="/home">Home</button>
-  <button mat-button routerLink="/tasklist" *ngIf="isAuthenticated">Task List</button>
-  <button mat-button routerLink="/create-task" *ngIf="isAuthenticated">Create Task</button>
-
-  <!-- Dropdown menu for authenticated user -->
-  <span *ngIf="isAuthenticated" class="user-info">
-    <button mat-button [matMenuTriggerFor]="userMenu">{{ userEmail }}</button>
-    <mat-menu #userMenu="matMenu">
-      <button mat-menu-item (click)="logout()">Log out</button>
-    </mat-menu>
-  </span>
-
-  <!-- Login and Sign-up buttons for unauthenticated users -->
-  <button mat-button routerLink="/sign-in" *ngIf="!isAuthenticated">Log in</button>
-  <button mat-button routerLink="/sign-up" *ngIf="!isAuthenticated">Sign up</button>
-</mat-toolbar>
 
 <div class="welcome-container animated-element">
   <h1 class="fade-in">Welcome to Task Manager</h1>
   <p class="fade-in">Manage your tasks efficiently and stay organized.</p>
-  <button mat-raised-button color="primary" class="fade-in" *ngIf="!isAuthenticated" routerLink="/sign-up">Get Started</button>
+  <button mat-raised-button color="accent" class="fade-in get-started-btn" *ngIf="!isAuthenticated" routerLink="/sign-up">Get Started</button>
 </div>

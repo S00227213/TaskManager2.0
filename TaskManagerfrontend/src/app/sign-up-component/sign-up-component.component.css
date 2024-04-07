@@ -1,0 +1,104 @@
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(to right, #6dd5ed, #2193b0); /* Background gradient */
+  }
+  
+  .container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+  .card {
+    background: #FFFFFF;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 350px; /* Adjust the width as needed */
+    width: 100%;
+    margin: 0 15px; /* Added horizontal padding */
+  }
+  
+  .card-header {
+    background: #00AABB;
+    color: white;
+    font-size: 24px;
+    text-align: center;
+    padding: 15px 20px;
+    border-top-left-radius: 8px; /* Match the card's border radius */
+    border-top-right-radius: 8px; /* Match the card's border radius */
+  }
+  
+  .card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    color: #333333;
+    margin-bottom: 5px;
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #cccccc;
+    border-radius: 4px;
+  }
+  
+  .btn-primary {
+    background-color: #00AABB;
+    border: none;
+    color: white;
+    padding: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .btn-primary:hover {
+    background-color: #008C99;
+  }
+  
+  .alert-danger {
+    color: #721c24;
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    padding: 10px;
+    border-radius: 4px;
+    margin-top: 10px;
+  }
+  
+  /* Ensures the input fields receive focus styling for accessibility */
+  input:focus {
+    outline: none;
+    border-color: #00AABB;
+    box-shadow: 0 0 0 2px rgba(0, 170, 187, 0.4);
+  }
+  
+  /* Placeholder color */
+  ::placeholder {
+    color: #bbbbbb;
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .container {
+      padding: 30px;
+    }
+  
+    .card {
+      margin: 0 auto; /* Auto margins for smaller screens */
+      width: auto; /* Allow the card to shrink on smaller screens */
+    }
+  }
+  

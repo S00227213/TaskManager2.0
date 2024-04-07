@@ -22,7 +22,6 @@ export class HomeComponent implements OnInit {
     const user = await this.cognitoService.getCurrentUser();
     this.isAuthenticated = !!user;
     if (user) {
-      // Optionally load the user's email if needed
       this.userEmail = user.getUsername();
     }
   }
@@ -46,8 +45,6 @@ export class HomeComponent implements OnInit {
       this.snackBar.open('Please log in first', '', { duration: 3000 });
     }
   }
-
-  // Optionally, implement loadUserProfile using Cognito attributes
   private async loadUserProfile(): Promise<void> {
     const user = await this.cognitoService.getCurrentUser();
     if (user) {

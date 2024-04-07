@@ -3,6 +3,7 @@ import { TaskService } from '../task.service';
 import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CognitoService } from '../cognito.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-task-list',
@@ -14,14 +15,18 @@ export class TaskListComponent implements OnInit {
   filteredTasks: any[] = [];
   priorities: string[] = ['All', 'High', 'Medium', 'Low'];
   selectedPriority: string = 'All';
+  categories: any[] = [];
+  selectedCategory: string = 'All';
   isAuthenticated: boolean = false;
   userEmail: string | undefined;
+  apiEndpoint: string = 'https://76v3f1gp1d.execute-api.eu-west-1.amazonaws.com/dev/tasks';
 
   constructor(
     private taskService: TaskService,
     private router: Router,
     private snackBar: MatSnackBar,
-    private cognitoService: CognitoService
+    private cognitoService: CognitoService,
+    private http: HttpClient
   ) {}
 
   async ngOnInit() {
@@ -32,24 +37,34 @@ export class TaskListComponent implements OnInit {
   private loadTaskList() {
     this.taskService.getTasks().subscribe(
       (data: any[]) => {
-        this.tasks = data;
+        this.tasks = data.map(task => ({
+          ...task,
+          id: task.task_id  
+        }));
         this.applyFilter();
+        console.log('Tasks loaded:', this.tasks);
       },
       (error) => {
         console.error('Error fetching tasks:', error);
       }
     );
   }
+  
+
 
   applyFilter() {
-    if (this.selectedPriority === 'All') {
-      this.filteredTasks = this.tasks;
-    } else {
-      this.filteredTasks = this.tasks.filter(task => task.priority === this.selectedPriority);
-    }
+    this.filteredTasks = this.tasks.filter(task => 
+      (this.selectedPriority === 'All' || task.priority === this.selectedPriority) &&
+      (this.selectedCategory === 'All' || task.category === this.selectedCategory)
+    );
+    console.log('Filtered tasks:', this.filteredTasks);
   }
 
   onPriorityChange() {
+    this.applyFilter();
+  }
+
+  onCategoryChange() {
     this.applyFilter();
   }
 
@@ -58,6 +73,7 @@ export class TaskListComponent implements OnInit {
       () => {
         this.snackBar.open('Task deleted successfully', 'OK', { duration: 3000 });
         this.loadTaskList(); // Reload task list to reflect the deletion
+        console.log('Task deleted:', taskId);
       },
       (error) => {
         this.snackBar.open('Error deleting task', 'OK', { duration: 3000 });
@@ -71,11 +87,18 @@ export class TaskListComponent implements OnInit {
     this.isAuthenticated = !!currentUser;
     if (currentUser) {
       this.userEmail = currentUser.getUsername();
+      console.log('Current user:', currentUser);
+    } else {
+      console.log('No authenticated user.');
     }
   }
 
   logout() {
     this.cognitoService.signOut();
-    this.router.navigate(['/home']).then(() => window.location.reload());
+    this.router.navigate(['/home']).then(() => {
+      window.location.reload();
+      console.log('User logged out.');
+    });
   }
+
 }

@@ -1,13 +1,3 @@
-<mat-toolbar color="primary" class="animated-element">
-  <span>Task Manager</span>
-  <span class="spacer"></span>
-  <!-- Navigation buttons -->
-  <button mat-button routerLink="/home">Home</button>
-  <button mat-button routerLink="/tasklist">Task List</button>
-  <button mat-button routerLink="/create-task">Create Task</button>
-  <!-- Logout button based on authentication state -->
-  <button mat-button (click)="logout()" *ngIf="isAuthenticated">Log out</button>
-</mat-toolbar>
 
 <div class="task-form-container">
   <!-- Floating action button for creating a task -->

@@ -1,4 +1,4 @@
-<p>confirm-sign-up-component works!</p>
+<p>Confirm Sign Up</p>
 
 <form (ngSubmit)="onSubmit()" [formGroup]="confirmForm">
   <div>
@@ -11,5 +11,8 @@
     <input type="text" id="code" formControlName="code" required>
   </div>
   
+  <!-- Display error message if there's an error during sign up confirmation -->
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+
   <button type="submit" [disabled]="!confirmForm.valid">Confirm Sign Up</button>
 </form>
